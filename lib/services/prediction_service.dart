@@ -1,6 +1,6 @@
 import 'dart:math';
+
 import '../models/period.dart';
-import '../models/cycle.dart';
 import '../models/user.dart';
 
 class PredictionService {

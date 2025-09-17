@@ -31,11 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Consumer<AppProvider>(
         builder: (context, appProvider, child) {
           final user = appProvider.user;
-          
+
           if (user == null) {
-            return const Center(
-              child: Text('No user data available'),
-            );
+            return const Center(child: Text('No user data available'));
           }
 
           return SingleChildScrollView(
@@ -80,17 +78,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 16),
             Text(
               user.name,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               user.age != null ? 'Age: ${user.age}' : 'Age: Not set',
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
             ),
             const SizedBox(height: 16),
             Row(
@@ -132,17 +127,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 8),
         Text(
           value,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         Text(
           label,
-          style: TextStyle(
-            color: Colors.grey.shade600,
-            fontSize: 12,
-          ),
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
           textAlign: TextAlign.center,
         ),
       ],
@@ -158,9 +147,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               'Cycle Settings',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             _buildSettingItem(
@@ -194,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildDataSection(AppProvider appProvider) {
     final periods = appProvider.periods;
     final symptoms = appProvider.symptoms;
-    
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -203,9 +192,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               'Your Data',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Row(
@@ -257,7 +246,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildDataCard(String label, String value, IconData icon, Color color) {
+  Widget _buildDataCard(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -279,10 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
             textAlign: TextAlign.center,
           ),
         ],
@@ -299,9 +290,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               'Preferences',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             _buildSettingItem(
@@ -346,9 +337,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               'Support & Information',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             _buildSettingItem(
@@ -386,9 +377,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               'Data Management',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             _buildSettingItem(
@@ -435,7 +426,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ListTile(
       leading: Icon(
         icon,
-        color: isDestructive ? Colors.red : (Theme.of(context).iconTheme.color ?? Colors.grey),
+        color: isDestructive
+            ? Colors.red
+            : (Theme.of(context).iconTheme.color ?? Colors.grey),
       ),
       title: Text(
         title,
@@ -455,7 +448,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _calculateDaysTracked(List<dynamic> periods) {
     if (periods.isEmpty) return 0;
     final firstPeriod = periods.last;
-    final lastPeriod = periods.first;
     return DateTime.now().difference(firstPeriod.startDate).inDays;
   }
 
@@ -463,14 +455,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Simple accuracy calculation based on data consistency
     final periods = appProvider.periods;
     final symptoms = appProvider.symptoms;
-    
+
     if (periods.isEmpty) return 0;
-    
+
     final totalDays = 30;
     final recentSymptoms = symptoms
-        .where((s) => s.date.isAfter(DateTime.now().subtract(Duration(days: totalDays))))
+        .where(
+          (s) => s.date.isAfter(
+            DateTime.now().subtract(Duration(days: totalDays)),
+          ),
+        )
         .length;
-    
+
     final consistencyScore = (recentSymptoms / totalDays * 100).clamp(0, 100);
     return consistencyScore.round();
   }
@@ -533,10 +529,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showHelp(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const HelpDialog(),
-    );
+    showDialog(context: context, builder: (context) => const HelpDialog());
   }
 
   void _contactSupport(BuildContext context) {
@@ -547,10 +540,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showAbout(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const AboutDialog(),
-    );
+    showDialog(context: context, builder: (context) => const AboutDialog());
   }
 
   void _exportData(BuildContext context, AppProvider appProvider) {
@@ -652,7 +642,12 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.cake, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+                      Icon(
+                        Icons.cake,
+                        color: Theme.of(
+                          context,
+                        ).iconTheme.color?.withOpacity(0.6),
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -660,12 +655,19 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                               ? 'Birth Date: ${DateFormat('MMM dd, yyyy').format(_selectedBirthDate!)}'
                               : 'Select Birth Date',
                           style: TextStyle(
-                            color: _selectedBirthDate != null ? null : Colors.grey,
+                            color: _selectedBirthDate != null
+                                ? null
+                                : Colors.grey,
                             fontSize: 16,
                           ),
                         ),
                       ),
-                      Icon(Icons.calendar_today, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+                      Icon(
+                        Icons.calendar_today,
+                        color: Theme.of(
+                          context,
+                        ).iconTheme.color?.withOpacity(0.6),
+                      ),
                     ],
                   ),
                 ),
@@ -674,10 +676,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 const SizedBox(height: 8),
                 Text(
                   'Age: ${_calculateAge(_selectedBirthDate!)} years',
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
                 ),
               ],
             ],
@@ -706,7 +705,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   Future<void> _selectBirthDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedBirthDate ?? DateTime.now().subtract(const Duration(days: 365 * 25)),
+      initialDate:
+          _selectedBirthDate ??
+          DateTime.now().subtract(const Duration(days: 365 * 25)),
       firstDate: DateTime.now().subtract(const Duration(days: 365 * 100)),
       lastDate: DateTime.now().subtract(const Duration(days: 365 * 13)),
       helpText: 'Select Birth Date',
@@ -721,7 +722,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   int _calculateAge(DateTime birthDate) {
     final now = DateTime.now();
     int age = now.year - birthDate.year;
-    if (now.month < birthDate.month || 
+    if (now.month < birthDate.month ||
         (now.month == birthDate.month && now.day < birthDate.day)) {
       age--;
     }
@@ -740,7 +741,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     try {
       final appProvider = Provider.of<AppProvider>(context, listen: false);
       final user = appProvider.user!;
-      
+
       final updatedUser = User(
         id: user.id,
         name: _nameController.text.trim(),
@@ -762,7 +763,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
       );
 
       await appProvider.updateUser(updatedUser);
-      
+
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1080,10 +1081,12 @@ class NotificationSettingsDialog extends StatefulWidget {
   const NotificationSettingsDialog({super.key});
 
   @override
-  State<NotificationSettingsDialog> createState() => _NotificationSettingsDialogState();
+  State<NotificationSettingsDialog> createState() =>
+      _NotificationSettingsDialogState();
 }
 
-class _NotificationSettingsDialogState extends State<NotificationSettingsDialog> {
+class _NotificationSettingsDialogState
+    extends State<NotificationSettingsDialog> {
   bool _periodReminders = true;
   bool _ovulationAlerts = true;
   bool _fertilityWindow = false;
@@ -1127,9 +1130,9 @@ class _NotificationSettingsDialogState extends State<NotificationSettingsDialog>
             children: [
               Text(
                 'Period Notifications',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               SwitchListTile(
@@ -1184,9 +1187,9 @@ class _NotificationSettingsDialogState extends State<NotificationSettingsDialog>
               const Divider(),
               Text(
                 'Fertility Notifications',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               SwitchListTile(
@@ -1214,9 +1217,9 @@ class _NotificationSettingsDialogState extends State<NotificationSettingsDialog>
               const Divider(),
               Text(
                 'Health Reminders',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               SwitchListTile(
@@ -1232,7 +1235,9 @@ class _NotificationSettingsDialogState extends State<NotificationSettingsDialog>
               ),
               SwitchListTile(
                 title: const Text('Medication Reminders'),
-                subtitle: const Text('Reminders for birth control or supplements'),
+                subtitle: const Text(
+                  'Reminders for birth control or supplements',
+                ),
                 value: _medicationReminders,
                 onChanged: (value) {
                   setState(() {
@@ -1284,7 +1289,7 @@ class _NotificationSettingsDialogState extends State<NotificationSettingsDialog>
     try {
       final appProvider = Provider.of<AppProvider>(context, listen: false);
       final user = appProvider.user!;
-      
+
       final notificationSettings = {
         'periodReminder': _periodReminders,
         'ovulationReminder': _ovulationAlerts,
@@ -1314,7 +1319,7 @@ class _NotificationSettingsDialogState extends State<NotificationSettingsDialog>
       );
 
       await appProvider.updateUser(updatedUser);
-      
+
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1386,8 +1391,10 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
     try {
       // Save privacy settings to user preferences
       // This would typically involve updating the user's privacy preferences
-      await Future.delayed(const Duration(milliseconds: 500)); // Simulate API call
-      
+      await Future.delayed(
+        const Duration(milliseconds: 500),
+      ); // Simulate API call
+
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1430,7 +1437,7 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               const SizedBox(height: 16),
-              
+
               // Data Collection Section
               const Align(
                 alignment: Alignment.centerLeft,
@@ -1440,10 +1447,12 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 ),
               ),
               const SizedBox(height: 8),
-              
+
               SwitchListTile(
                 title: const Text('Analytics'),
-                subtitle: const Text('Help improve the app with usage analytics'),
+                subtitle: const Text(
+                  'Help improve the app with usage analytics',
+                ),
                 value: _analyticsEnabled,
                 onChanged: (value) {
                   setState(() {
@@ -1452,7 +1461,7 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 },
                 contentPadding: EdgeInsets.zero,
               ),
-              
+
               SwitchListTile(
                 title: const Text('Crash Reports'),
                 subtitle: const Text('Automatically send crash reports'),
@@ -1464,9 +1473,9 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 },
                 contentPadding: EdgeInsets.zero,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Data Sharing Section
               const Align(
                 alignment: Alignment.centerLeft,
@@ -1476,7 +1485,7 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 ),
               ),
               const SizedBox(height: 8),
-              
+
               SwitchListTile(
                 title: const Text('Share Anonymous Data'),
                 subtitle: const Text('Share anonymized data for research'),
@@ -1488,7 +1497,7 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 },
                 contentPadding: EdgeInsets.zero,
               ),
-              
+
               SwitchListTile(
                 title: const Text('Personalized Ads'),
                 subtitle: const Text('Show ads based on your interests'),
@@ -1500,9 +1509,9 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 },
                 contentPadding: EdgeInsets.zero,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Security Section
               const Align(
                 alignment: Alignment.centerLeft,
@@ -1512,7 +1521,7 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 ),
               ),
               const SizedBox(height: 8),
-              
+
               SwitchListTile(
                 title: const Text('Biometric Lock'),
                 subtitle: const Text('Use fingerprint or face unlock'),
@@ -1524,7 +1533,7 @@ class _PrivacySettingsDialogState extends State<PrivacySettingsDialog> {
                 },
                 contentPadding: EdgeInsets.zero,
               ),
-              
+
               SwitchListTile(
                 title: const Text('Auto Lock'),
                 subtitle: const Text('Lock app when in background'),
@@ -1584,7 +1593,7 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
   void _loadCurrentSettings() {
     final appProvider = Provider.of<AppProvider>(context, listen: false);
     final user = appProvider.user;
-    
+
     if (user != null) {
       setState(() {
         // Load from user preferences or use defaults
@@ -1603,12 +1612,12 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
     });
 
     try {
-      final appProvider = Provider.of<AppProvider>(context, listen: false);
-      
       // Save units settings to user preferences
       // This would typically involve updating the user's unit preferences
-      await Future.delayed(const Duration(milliseconds: 500)); // Simulate API call
-      
+      await Future.delayed(
+        const Duration(milliseconds: 500),
+      ); // Simulate API call
+
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1695,7 +1704,7 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               const SizedBox(height: 20),
-              
+
               // Temperature Unit
               _buildUnitSelector(
                 title: 'Temperature',
@@ -1708,7 +1717,7 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                 },
               ),
               const SizedBox(height: 16),
-              
+
               // Weight Unit
               _buildUnitSelector(
                 title: 'Weight',
@@ -1721,7 +1730,7 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                 },
               ),
               const SizedBox(height: 16),
-              
+
               // Height Unit
               _buildUnitSelector(
                 title: 'Height',
@@ -1734,7 +1743,7 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                 },
               ),
               const SizedBox(height: 16),
-              
+
               // Date Format
               _buildUnitSelector(
                 title: 'Date Format',
@@ -1747,7 +1756,7 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                 },
               ),
               const SizedBox(height: 16),
-              
+
               // Time Format
               _buildUnitSelector(
                 title: 'Time Format',
@@ -1759,9 +1768,9 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Preview Section
               Container(
                 width: double.infinity,
@@ -1779,11 +1788,17 @@ class _UnitsSettingsDialogState extends State<UnitsSettingsDialog> {
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(height: 8),
-                    Text('Temperature: 36.5°${_temperatureUnit == 'Celsius' ? 'C' : 'F'}'),
+                    Text(
+                      'Temperature: 36.5°${_temperatureUnit == 'Celsius' ? 'C' : 'F'}',
+                    ),
                     Text('Weight: 65 $_weightUnit'),
                     Text('Height: 165 $_heightUnit'),
-                    Text('Date: ${_dateFormat.replaceAll('DD', '15').replaceAll('MM', '03').replaceAll('YYYY', '2024')}'),
-                    Text('Time: ${_timeFormat == '12-hour' ? '2:30 PM' : '14:30'}'),
+                    Text(
+                      'Date: ${_dateFormat.replaceAll('DD', '15').replaceAll('MM', '03').replaceAll('YYYY', '2024')}',
+                    ),
+                    Text(
+                      'Time: ${_timeFormat == '12-hour' ? '2:30 PM' : '14:30'}',
+                    ),
                   ],
                 ),
               ),
@@ -1820,8 +1835,8 @@ class ThemeSettingsDialog extends StatefulWidget {
 
 class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
   String _selectedTheme = 'System';
-  bool _useSystemTheme = true;
-  bool _isLoading = false;
+  bool useSystemTheme = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -1831,22 +1846,21 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
 
   void _loadCurrentSettings() {
     final appProvider = Provider.of<AppProvider>(context, listen: false);
-    
+
     // Load current theme settings
     setState(() {
       switch (appProvider.themeMode) {
         case ThemeMode.light:
           _selectedTheme = 'Light';
-          _useSystemTheme = false;
+          useSystemTheme = false;
           break;
         case ThemeMode.dark:
           _selectedTheme = 'Dark';
-          _useSystemTheme = false;
+          useSystemTheme = false;
           break;
         case ThemeMode.system:
-        default:
           _selectedTheme = 'System';
-          _useSystemTheme = true;
+          useSystemTheme = true;
           break;
       }
     });
@@ -1854,12 +1868,12 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
 
   Future<void> _saveSettings() async {
     setState(() {
-      _isLoading = true;
+      isLoading = true;
     });
 
     try {
       final appProvider = Provider.of<AppProvider>(context, listen: false);
-      
+
       // Convert selected theme to ThemeMode
       ThemeMode newThemeMode;
       switch (_selectedTheme) {
@@ -1874,10 +1888,10 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
           newThemeMode = ThemeMode.system;
           break;
       }
-      
+
       // Save theme settings through AppProvider
       await appProvider.setThemeMode(newThemeMode);
-      
+
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1899,7 +1913,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
     } finally {
       if (mounted) {
         setState(() {
-          _isLoading = false;
+          isLoading = false;
         });
       }
     }
@@ -1913,16 +1927,20 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
     required Color iconColor,
   }) {
     final isSelected = _selectedTheme == value;
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         border: Border.all(
-          color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
+          color: isSelected
+              ? Theme.of(context).primaryColor
+              : Colors.grey.shade300,
           width: isSelected ? 2 : 1,
         ),
         borderRadius: BorderRadius.circular(12),
-        color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
+        color: isSelected
+            ? Theme.of(context).primaryColor.withOpacity(0.1)
+            : null,
       ),
       child: ListTile(
         leading: Container(
@@ -1949,7 +1967,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
         onTap: () {
           setState(() {
             _selectedTheme = value;
-            _useSystemTheme = value == 'System';
+            useSystemTheme = value == 'System';
           });
         },
       ),
@@ -1959,7 +1977,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return AlertDialog(
       title: const Text('Theme Settings'),
       content: SizedBox(
@@ -1974,7 +1992,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               const SizedBox(height: 20),
-              
+
               // Light Theme Option
               _buildThemeOption(
                 title: 'Light',
@@ -1983,7 +2001,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                 icon: Icons.light_mode,
                 iconColor: Colors.orange,
               ),
-              
+
               // Dark Theme Option
               _buildThemeOption(
                 title: 'Dark',
@@ -1992,7 +2010,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                 icon: Icons.dark_mode,
                 iconColor: Colors.indigo,
               ),
-              
+
               // System Theme Option
               _buildThemeOption(
                 title: 'System',
@@ -2001,18 +2019,22 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                 icon: Icons.settings_suggest,
                 iconColor: Colors.green,
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Current Theme Preview
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade50,
+                  color: isDarkMode
+                      ? Colors.grey.shade800
+                      : Colors.grey.shade50,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isDarkMode ? Colors.grey.shade600 : Colors.grey.shade200,
+                    color: isDarkMode
+                        ? Colors.grey.shade600
+                        : Colors.grey.shade200,
                   ),
                 ),
                 child: Column(
@@ -2057,7 +2079,9 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                           Text(
                             'This is how your app will look',
                             style: TextStyle(
-                              color: isDarkMode ? Colors.white70 : Colors.black87,
+                              color: isDarkMode
+                                  ? Colors.white70
+                                  : Colors.black87,
                             ),
                           ),
                         ],
@@ -2066,7 +2090,7 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                   ],
                 ),
               ),
-              
+
               if (_selectedTheme == 'System') ...[
                 const SizedBox(height: 16),
                 Container(
@@ -2078,7 +2102,11 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.blue.shade700,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -2099,12 +2127,12 @@ class _ThemeSettingsDialogState extends State<ThemeSettingsDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+          onPressed: isLoading ? null : () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: _isLoading ? null : _saveSettings,
-          child: _isLoading
+          onPressed: isLoading ? null : _saveSettings,
+          child: isLoading
               ? const SizedBox(
                   width: 16,
                   height: 16,
@@ -2131,63 +2159,75 @@ class _HelpDialogState extends State<HelpDialog> {
   final List<Map<String, String>> _faqItems = [
     {
       'question': 'How do I track my period?',
-      'answer': 'To track your period, go to the home screen and tap the "Start Period" button when your period begins. You can log the flow intensity, symptoms, and any notes. When your period ends, tap "End Period".',
+      'answer':
+          'To track your period, go to the home screen and tap the "Start Period" button when your period begins. You can log the flow intensity, symptoms, and any notes. When your period ends, tap "End Period".',
       'category': 'tracking',
     },
     {
       'question': 'How accurate are the predictions?',
-      'answer': 'Our predictions become more accurate as you track more cycles. Initially, predictions are based on average cycle lengths. After 3-6 months of tracking, the app learns your unique patterns for more personalized predictions.',
+      'answer':
+          'Our predictions become more accurate as you track more cycles. Initially, predictions are based on average cycle lengths. After 3-6 months of tracking, the app learns your unique patterns for more personalized predictions.',
       'category': 'predictions',
     },
     {
       'question': 'Can I edit past period data?',
-      'answer': 'Yes! Go to the Calendar screen, tap on any date with period data, and you can edit or delete the entry. You can also add missed periods by tapping on past dates.',
+      'answer':
+          'Yes! Go to the Calendar screen, tap on any date with period data, and you can edit or delete the entry. You can also add missed periods by tapping on past dates.',
       'category': 'tracking',
     },
     {
       'question': 'What symptoms can I track?',
-      'answer': 'You can track physical symptoms (cramps, headaches, bloating, etc.), emotional symptoms (mood swings, irritability, etc.), and other symptoms like skin changes, sleep patterns, and energy levels.',
+      'answer':
+          'You can track physical symptoms (cramps, headaches, bloating, etc.), emotional symptoms (mood swings, irritability, etc.), and other symptoms like skin changes, sleep patterns, and energy levels.',
       'category': 'symptoms',
     },
     {
       'question': 'How do I set up notifications?',
-      'answer': 'Go to Profile > Notification Settings to customize your notification preferences. You can set reminders for period predictions, ovulation, and daily tracking reminders.',
+      'answer':
+          'Go to Profile > Notification Settings to customize your notification preferences. You can set reminders for period predictions, ovulation, and daily tracking reminders.',
       'category': 'notifications',
     },
     {
       'question': 'Is my data private and secure?',
-      'answer': 'Yes, your data is stored locally on your device and encrypted. We never share your personal health data with third parties. You can review our privacy settings in Profile > Privacy Settings.',
+      'answer':
+          'Yes, your data is stored locally on your device and encrypted. We never share your personal health data with third parties. You can review our privacy settings in Profile > Privacy Settings.',
       'category': 'privacy',
     },
     {
       'question': 'How do I backup my data?',
-      'answer': 'You can backup your data by going to Profile > Export Data. This creates a file you can save or share. You can also enable cloud backup in Profile > Backup Settings.',
+      'answer':
+          'You can backup your data by going to Profile > Export Data. This creates a file you can save or share. You can also enable cloud backup in Profile > Backup Settings.',
       'category': 'backup',
     },
     {
       'question': 'What if my cycles are irregular?',
-      'answer': 'The app is designed to handle irregular cycles. Keep tracking consistently, and the app will adapt to your patterns. For very irregular cycles, consult with a healthcare provider.',
+      'answer':
+          'The app is designed to handle irregular cycles. Keep tracking consistently, and the app will adapt to your patterns. For very irregular cycles, consult with a healthcare provider.',
       'category': 'tracking',
     },
     {
       'question': 'Can I track multiple symptoms per day?',
-      'answer': 'Absolutely! You can log multiple symptoms, moods, and notes for each day. The more data you provide, the better insights you\'ll receive.',
+      'answer':
+          'Absolutely! You can log multiple symptoms, moods, and notes for each day. The more data you provide, the better insights you\'ll receive.',
       'category': 'symptoms',
     },
     {
       'question': 'How do I change the app theme?',
-      'answer': 'Go to Profile > Theme Settings to choose between light, dark, or system theme. You can also customize accent colors and enable automatic theme switching.',
+      'answer':
+          'Go to Profile > Theme Settings to choose between light, dark, or system theme. You can also customize accent colors and enable automatic theme switching.',
       'category': 'settings',
     },
   ];
 
   List<Map<String, String>> get _filteredFaqItems {
     if (_searchQuery.isEmpty) return _faqItems;
-    
+
     return _faqItems.where((item) {
-      return item['question']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-             item['answer']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-             item['category']!.toLowerCase().contains(_searchQuery.toLowerCase());
+      return item['question']!.toLowerCase().contains(
+            _searchQuery.toLowerCase(),
+          ) ||
+          item['answer']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          item['category']!.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
   }
 
@@ -2209,10 +2249,11 @@ class _HelpDialogState extends State<HelpDialog> {
                   },
                 )
               : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
         onChanged: (value) {
           setState(() {
@@ -2257,7 +2298,7 @@ class _HelpDialogState extends State<HelpDialog> {
 
   Widget _buildFaqItem(Map<String, String> item, int index) {
     final isExpanded = _expandedIndex == index;
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: Column(
@@ -2285,10 +2326,7 @@ class _HelpDialogState extends State<HelpDialog> {
             const Divider(height: 1),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(
-                item['answer']!,
-                style: const TextStyle(height: 1.5),
-              ),
+              child: Text(item['answer']!, style: const TextStyle(height: 1.5)),
             ),
           ],
         ],
@@ -2430,7 +2468,7 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
     'Data Sync Problem',
     'Payment Issue',
     'Privacy Concern',
-    'Other'
+    'Other',
   ];
 
   @override
@@ -2441,7 +2479,8 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
   }
 
   Future<void> _sendSupportMessage() async {
-    if (_messageController.text.trim().isEmpty || _emailController.text.trim().isEmpty) {
+    if (_messageController.text.trim().isEmpty ||
+        _emailController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all required fields'),
@@ -2457,31 +2496,37 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
 
     try {
       // Prepare email content
-      final String subject = Uri.encodeComponent('Period Track Support - $_selectedIssueType');
+      final String subject = Uri.encodeComponent(
+        'Period Track Support - $_selectedIssueType',
+      );
       final String body = Uri.encodeComponent(
         'Issue Type: $_selectedIssueType\n'
         'User Email: ${_emailController.text.trim()}\n\n'
         'Message:\n${_messageController.text.trim()}\n\n'
         '---\n'
-        'Sent from Period Track App'
+        'Sent from Period Track App',
       );
-      
+
       // Create mailto URL
-      final Uri emailUri = Uri.parse('mailto:fiazhari@gmail.com?subject=$subject&body=$body');
-      
+      final Uri emailUri = Uri.parse(
+        'mailto:fiazhari@gmail.com?subject=$subject&body=$body',
+      );
+
       // Launch email client
       if (await canLaunchUrl(emailUri)) {
         await launchUrl(emailUri);
-        
+
         setState(() {
           _isLoading = false;
         });
-        
+
         if (mounted) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Email client opened! Please send the email to complete your support request.'),
+              content: Text(
+                'Email client opened! Please send the email to complete your support request.',
+              ),
               backgroundColor: Colors.green,
             ),
           );
@@ -2493,7 +2538,7 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
       setState(() {
         _isLoading = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -2507,19 +2552,14 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
 
   void _openEmailClient() {
     // In a real app, this would open the email client
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Opening email client...'),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Opening email client...')));
   }
 
   void _openFAQ() {
     Navigator.of(context).pop();
-    showDialog(
-      context: context,
-      builder: (context) => const HelpDialog(),
-    );
+    showDialog(context: context, builder: (context) => const HelpDialog());
   }
 
   @override
@@ -2538,7 +2578,7 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
-              
+
               // Quick Actions
               Row(
                 children: [
@@ -2563,18 +2603,18 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
               const Divider(),
               const SizedBox(height: 20),
-              
+
               // Support Form
               const Text(
                 'Send us a message:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 15),
-              
+
               // Issue Type Dropdown
               DropdownButtonFormField<String>(
                 value: _selectedIssueType,
@@ -2583,10 +2623,7 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                   border: OutlineInputBorder(),
                 ),
                 items: _issueTypes.map((type) {
-                  return DropdownMenuItem(
-                    value: type,
-                    child: Text(type),
-                  );
+                  return DropdownMenuItem(value: type, child: Text(type));
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
@@ -2594,9 +2631,9 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               // Email Field
               TextFormField(
                 controller: _emailController,
@@ -2607,9 +2644,9 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               // Message Field
               TextFormField(
                 controller: _messageController,
@@ -2621,9 +2658,9 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                 maxLines: 4,
                 maxLength: 500,
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               // Contact Info
               Container(
                 padding: const EdgeInsets.all(12),
@@ -2641,7 +2678,13 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(Icons.email, size: 16, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+                        Icon(
+                          Icons.email,
+                          size: 16,
+                          color: Theme.of(
+                            context,
+                          ).iconTheme.color?.withOpacity(0.6),
+                        ),
                         SizedBox(width: 8),
                         Text('fiazhari@gmail.com'),
                       ],
@@ -2649,7 +2692,13 @@ class _ContactSupportDialogState extends State<ContactSupportDialog> {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.schedule, size: 16, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+                        Icon(
+                          Icons.schedule,
+                          size: 16,
+                          color: Theme.of(
+                            context,
+                          ).iconTheme.color?.withOpacity(0.6),
+                        ),
                         SizedBox(width: 8),
                         Text('Response time: 24-48 hours'),
                       ],
@@ -2711,7 +2760,11 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
   void _initializeDates() {
     final now = DateTime.now();
     _endDate = now;
-    _startDate = DateTime(now.year - 1, now.month, now.day); // Default to 1 year ago
+    _startDate = DateTime(
+      now.year - 1,
+      now.month,
+      now.day,
+    ); // Default to 1 year ago
   }
 
   Future<void> _selectDateRange() async {
@@ -2746,7 +2799,7 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
       // 1. Gather selected data from the database
       // 2. Format it according to the selected format
       // 3. Save it to device storage or share it
-      
+
       final dataTypes = <String>[];
       if (_includePeriods) dataTypes.add('Periods');
       if (_includeSymptoms) dataTypes.add('Symptoms');
@@ -2759,7 +2812,7 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Data exported successfully!\nFormat: $_exportFormat\nData types: ${dataTypes.join(', ')}'
+              'Data exported successfully!\nFormat: $_exportFormat\nData types: ${dataTypes.join(', ')}',
             ),
             backgroundColor: Colors.green,
             duration: const Duration(seconds: 4),
@@ -2809,8 +2862,12 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final hasSelectedData = _includePeriods || _includeSymptoms || 
-                           _includeMoods || _includeTemperature || _includeNotes;
+    final hasSelectedData =
+        _includePeriods ||
+        _includeSymptoms ||
+        _includeMoods ||
+        _includeTemperature ||
+        _includeNotes;
 
     return AlertDialog(
       title: const Text('Export Data'),
@@ -2826,7 +2883,7 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               const SizedBox(height: 20),
-              
+
               // Export Format
               const Text(
                 'Export Format',
@@ -2861,7 +2918,7 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Date Range
               const Text(
                 'Date Range',
@@ -2879,24 +2936,37 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                   child: DropdownButton<String>(
                     value: _dateRange,
                     isExpanded: true,
-                    items: ['All Time', 'Last 6 Months', 'Last Year', 'Custom Range']
-                        .map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                    items:
+                        [
+                          'All Time',
+                          'Last 6 Months',
+                          'Last Year',
+                          'Custom Range',
+                        ].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         setState(() {
                           _dateRange = newValue;
                           if (newValue == 'Last 6 Months') {
                             final now = DateTime.now();
-                            _startDate = DateTime(now.year, now.month - 6, now.day);
+                            _startDate = DateTime(
+                              now.year,
+                              now.month - 6,
+                              now.day,
+                            );
                             _endDate = now;
                           } else if (newValue == 'Last Year') {
                             final now = DateTime.now();
-                            _startDate = DateTime(now.year - 1, now.month, now.day);
+                            _startDate = DateTime(
+                              now.year - 1,
+                              now.month,
+                              now.day,
+                            );
                             _endDate = now;
                           } else if (newValue == 'Custom Range') {
                             _selectDateRange();
@@ -2907,8 +2977,10 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                   ),
                 ),
               ),
-              
-              if (_dateRange == 'Custom Range' && _startDate != null && _endDate != null) ...[
+
+              if (_dateRange == 'Custom Range' &&
+                  _startDate != null &&
+                  _endDate != null) ...[
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.all(12),
@@ -2919,7 +2991,11 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.date_range, color: Colors.blue.shade700, size: 20),
+                      Icon(
+                        Icons.date_range,
+                        color: Colors.blue.shade700,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -2935,56 +3011,61 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                   ),
                 ),
               ],
-              
+
               const SizedBox(height: 20),
-              
+
               // Data Types
               const Text(
                 'Data to Include',
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               ),
               const SizedBox(height: 8),
-              
+
               _buildDataTypeCheckbox(
                 title: 'Period Data',
                 subtitle: 'Cycle dates, flow intensity, duration',
                 value: _includePeriods,
-                onChanged: (value) => setState(() => _includePeriods = value ?? false),
+                onChanged: (value) =>
+                    setState(() => _includePeriods = value ?? false),
                 icon: Icons.water_drop,
               ),
-              
+
               _buildDataTypeCheckbox(
                 title: 'Symptoms',
                 subtitle: 'Physical and emotional symptoms',
                 value: _includeSymptoms,
-                onChanged: (value) => setState(() => _includeSymptoms = value ?? false),
+                onChanged: (value) =>
+                    setState(() => _includeSymptoms = value ?? false),
                 icon: Icons.healing,
               ),
-              
+
               _buildDataTypeCheckbox(
                 title: 'Mood Tracking',
                 subtitle: 'Daily mood and energy levels',
                 value: _includeMoods,
-                onChanged: (value) => setState(() => _includeMoods = value ?? false),
+                onChanged: (value) =>
+                    setState(() => _includeMoods = value ?? false),
                 icon: Icons.mood,
               ),
-              
+
               _buildDataTypeCheckbox(
                 title: 'Temperature',
                 subtitle: 'Basal body temperature readings',
                 value: _includeTemperature,
-                onChanged: (value) => setState(() => _includeTemperature = value ?? false),
+                onChanged: (value) =>
+                    setState(() => _includeTemperature = value ?? false),
                 icon: Icons.thermostat,
               ),
-              
+
               _buildDataTypeCheckbox(
                 title: 'Notes',
                 subtitle: 'Personal notes and observations',
                 value: _includeNotes,
-                onChanged: (value) => setState(() => _includeNotes = value ?? false),
+                onChanged: (value) =>
+                    setState(() => _includeNotes = value ?? false),
                 icon: Icons.note,
               ),
-              
+
               if (!hasSelectedData) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -2996,7 +3077,11 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.warning_amber, color: Colors.orange.shade700, size: 20),
+                      Icon(
+                        Icons.warning_amber,
+                        color: Colors.orange.shade700,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -3045,7 +3130,7 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
   String? _selectedFileName;
   String? _fileFormat;
   bool _isImporting = false;
-  bool _replaceExistingData = false;
+  bool replaceExistingData = false;
   bool _mergeWithExistingData = true;
   bool _createBackupBeforeImport = true;
   Map<String, dynamic>? _previewData;
@@ -3091,10 +3176,12 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
 
       // Simulate validation checks
       if (_selectedFileName!.contains('invalid')) {
-        _validationError = 'Invalid file format. Please select a valid backup file.';
+        _validationError =
+            'Invalid file format. Please select a valid backup file.';
         _previewData = null;
       } else if (_selectedFileName!.contains('corrupted')) {
-        _validationError = 'File appears to be corrupted. Please try a different file.';
+        _validationError =
+            'File appears to be corrupted. Please try a different file.';
         _previewData = null;
       }
     } catch (e) {
@@ -3133,7 +3220,7 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
               'Data imported successfully!\n'
               '${_previewData!['periods']} periods, '
               '${_previewData!['symptoms']} symptoms, '
-              '${_previewData!['moods']} mood entries imported.'
+              '${_previewData!['moods']} mood entries imported.',
             ),
             backgroundColor: Colors.green,
             duration: const Duration(seconds: 4),
@@ -3172,17 +3259,23 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             border: Border.all(
-              color: _selectedFileName != null ? Colors.green : Colors.grey.shade300,
+              color: _selectedFileName != null
+                  ? Colors.green
+                  : Colors.grey.shade300,
               width: 2,
               style: BorderStyle.solid,
             ),
             borderRadius: BorderRadius.circular(8),
-            color: _selectedFileName != null ? Colors.green.shade50 : Colors.grey.shade50,
+            color: _selectedFileName != null
+                ? Colors.green.shade50
+                : Colors.grey.shade50,
           ),
           child: Column(
             children: [
               Icon(
-                _selectedFileName != null ? Icons.check_circle : Icons.upload_file,
+                _selectedFileName != null
+                    ? Icons.check_circle
+                    : Icons.upload_file,
                 size: 48,
                 color: _selectedFileName != null ? Colors.green : Colors.grey,
               ),
@@ -3191,24 +3284,25 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
                 _selectedFileName ?? 'No file selected',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: _selectedFileName != null ? Colors.green.shade700 : Colors.grey.shade600,
+                  color: _selectedFileName != null
+                      ? Colors.green.shade700
+                      : Colors.grey.shade600,
                 ),
               ),
               if (_fileFormat != null) ...[
                 const SizedBox(height: 4),
                 Text(
                   'Format: $_fileFormat',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
               const SizedBox(height: 12),
               ElevatedButton.icon(
                 onPressed: _isImporting ? null : _selectFile,
                 icon: const Icon(Icons.folder_open),
-                label: Text(_selectedFileName != null ? 'Change File' : 'Select File'),
+                label: Text(
+                  _selectedFileName != null ? 'Change File' : 'Select File',
+                ),
               ),
             ],
           ),
@@ -3216,10 +3310,7 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
         const SizedBox(height: 8),
         Text(
           'Supported formats: ${_supportedFormats.join(', ')}',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey.shade600,
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
         ),
       ],
     );
@@ -3250,7 +3341,11 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.blue.shade700,
+                    size: 20,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Found data from ${_previewData!['date_range']}',
@@ -3262,10 +3357,26 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
                 ],
               ),
               const SizedBox(height: 12),
-              _buildDataCount('Period cycles', _previewData!['periods'], Icons.water_drop),
-              _buildDataCount('Symptom entries', _previewData!['symptoms'], Icons.healing),
-              _buildDataCount('Mood entries', _previewData!['moods'], Icons.mood),
-              _buildDataCount('Temperature readings', _previewData!['temperature_readings'], Icons.thermostat),
+              _buildDataCount(
+                'Period cycles',
+                _previewData!['periods'],
+                Icons.water_drop,
+              ),
+              _buildDataCount(
+                'Symptom entries',
+                _previewData!['symptoms'],
+                Icons.healing,
+              ),
+              _buildDataCount(
+                'Mood entries',
+                _previewData!['moods'],
+                Icons.mood,
+              ),
+              _buildDataCount(
+                'Temperature readings',
+                _previewData!['temperature_readings'],
+                Icons.thermostat,
+              ),
               _buildDataCount('Notes', _previewData!['notes'], Icons.note),
             ],
           ),
@@ -3282,10 +3393,7 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
           Icon(icon, size: 16, color: Colors.blue.shade600),
           const SizedBox(width: 8),
           Text('$label: '),
-          Text(
-            '$count',
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
+          Text('$count', style: const TextStyle(fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -3301,22 +3409,23 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
         const SizedBox(height: 8),
-        
+
         CheckboxListTile(
           title: const Text('Create backup before import'),
           subtitle: const Text('Recommended: Creates a backup of current data'),
           value: _createBackupBeforeImport,
-          onChanged: (value) => setState(() => _createBackupBeforeImport = value ?? true),
+          onChanged: (value) =>
+              setState(() => _createBackupBeforeImport = value ?? true),
           contentPadding: EdgeInsets.zero,
           controlAffinity: ListTileControlAffinity.leading,
         ),
-        
+
         const SizedBox(height: 8),
         const Text(
           'Data Handling',
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
-        
+
         RadioListTile<bool>(
           title: const Text('Merge with existing data'),
           subtitle: const Text('Add imported data to current data'),
@@ -3324,11 +3433,11 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
           groupValue: _mergeWithExistingData,
           onChanged: (value) => setState(() {
             _mergeWithExistingData = value ?? true;
-            _replaceExistingData = !_mergeWithExistingData;
+            replaceExistingData = !_mergeWithExistingData;
           }),
           contentPadding: EdgeInsets.zero,
         ),
-        
+
         RadioListTile<bool>(
           title: const Text('Replace existing data'),
           subtitle: const Text('Warning: This will delete all current data'),
@@ -3336,7 +3445,7 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
           groupValue: _mergeWithExistingData,
           onChanged: (value) => setState(() {
             _mergeWithExistingData = value ?? false;
-            _replaceExistingData = !_mergeWithExistingData;
+            replaceExistingData = !_mergeWithExistingData;
           }),
           contentPadding: EdgeInsets.zero,
         ),
@@ -3346,7 +3455,8 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final canImport = _previewData != null && _validationError == null && !_isImporting;
+    final canImport =
+        _previewData != null && _validationError == null && !_isImporting;
 
     return AlertDialog(
       title: const Text('Import Data'),
@@ -3362,9 +3472,9 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               const SizedBox(height: 20),
-              
+
               _buildFileSelection(),
-              
+
               if (_validationError != null) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -3376,7 +3486,11 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red.shade700, size: 20),
+                      Icon(
+                        Icons.error_outline,
+                        color: Colors.red.shade700,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -3388,9 +3502,9 @@ class _ImportDataDialogState extends State<ImportDataDialog> {
                   ),
                 ),
               ],
-              
+
               _buildPreviewSection(),
-              
+
               if (_previewData != null && _validationError == null)
                 _buildImportOptions(),
             ],
@@ -3438,14 +3552,14 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
     'Real-time',
     'Daily',
     'Weekly',
-    'Monthly'
+    'Monthly',
   ];
 
   final List<String> _cloudProviders = [
     'Google Drive',
     'iCloud',
     'Dropbox',
-    'OneDrive'
+    'OneDrive',
   ];
 
   Future<void> _saveSettings() async {
@@ -3500,7 +3614,7 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
       builder: (context) => AlertDialog(
         title: const Text('Restore from Backup'),
         content: const Text(
-          'This will replace your current data with the backup data. This action cannot be undone. Continue?'
+          'This will replace your current data with the backup data. This action cannot be undone. Continue?',
         ),
         actions: [
           TextButton(
@@ -3541,10 +3655,10 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
 
   String _formatLastBackup() {
     if (_lastBackupDate == null) return 'Never';
-    
+
     final now = DateTime.now();
     final difference = now.difference(_lastBackupDate!);
-    
+
     if (difference.inMinutes < 60) {
       return '${difference.inMinutes} minutes ago';
     } else if (difference.inHours < 24) {
@@ -3599,10 +3713,14 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                                 ? const SizedBox(
                                     width: 16,
                                     height: 16,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
                                   )
                                 : const Icon(Icons.backup),
-                            label: Text(_isBackingUp ? 'Backing up...' : 'Backup Now'),
+                            label: Text(
+                              _isBackingUp ? 'Backing up...' : 'Backup Now',
+                            ),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -3618,16 +3736,16 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Auto Backup Settings
               const Text(
                 'Backup Settings',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 15),
-              
+
               SwitchListTile(
                 title: const Text('Auto Backup'),
                 subtitle: const Text('Automatically backup your data'),
@@ -3638,7 +3756,7 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                   });
                 },
               ),
-              
+
               if (_autoBackupEnabled) ...[
                 const SizedBox(height: 10),
                 DropdownButtonFormField<String>(
@@ -3660,9 +3778,9 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                   },
                 ),
               ],
-              
+
               const SizedBox(height: 15),
-              
+
               SwitchListTile(
                 title: const Text('WiFi Only'),
                 subtitle: const Text('Only backup when connected to WiFi'),
@@ -3673,9 +3791,9 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               SwitchListTile(
                 title: const Text('Encrypt Backups'),
                 subtitle: const Text('Encrypt backup data for security'),
@@ -3686,9 +3804,9 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Cloud Provider
               DropdownButtonFormField<String>(
                 value: _cloudProvider,
@@ -3714,9 +3832,9 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Storage Info
               Container(
                 padding: const EdgeInsets.all(12),
@@ -3734,7 +3852,13 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(Icons.storage, size: 16, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+                        Icon(
+                          Icons.storage,
+                          size: 16,
+                          color: Theme.of(
+                            context,
+                          ).iconTheme.color?.withOpacity(0.6),
+                        ),
                         SizedBox(width: 8),
                         Text('Backup size: ~2.5 MB'),
                       ],
@@ -3742,7 +3866,13 @@ class _BackupSettingsDialogState extends State<BackupSettingsDialog> {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.history, size: 16, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+                        Icon(
+                          Icons.history,
+                          size: 16,
+                          color: Theme.of(
+                            context,
+                          ).iconTheme.color?.withOpacity(0.6),
+                        ),
                         SizedBox(width: 8),
                         Text('Backup history: 30 days'),
                       ],

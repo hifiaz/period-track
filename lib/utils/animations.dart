@@ -861,7 +861,7 @@ class _HoverEffectWidgetState extends State<_HoverEffectWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isHovered = false;
+  bool isHovered = false;
 
   @override
   void initState() {
@@ -889,11 +889,11 @@ class _HoverEffectWidgetState extends State<_HoverEffectWidget>
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (_) {
-        setState(() => _isHovered = true);
+        setState(() => isHovered = true);
         _controller.forward();
       },
       onExit: (_) {
-        setState(() => _isHovered = false);
+        setState(() => isHovered = false);
         _controller.reverse();
       },
       child: AnimatedBuilder(

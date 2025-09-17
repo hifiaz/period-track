@@ -387,7 +387,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  Widget _buildTimeSelector(
+  Widget buildTimeSelector(
     String label,
     TimeOfDay time,
     ValueChanged<TimeOfDay> onChanged,

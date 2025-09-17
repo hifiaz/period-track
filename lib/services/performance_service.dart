@@ -14,13 +14,13 @@ class PerformanceService {
   final Map<String, DateTime> _operationStartTimes = {};
   final Map<String, Duration> _operationDurations = {};
   final List<PerformanceMetric> _metrics = [];
-  
+
   // Memory management
   final Map<String, dynamic> _cache = {};
   final Map<String, DateTime> _cacheTimestamps = {};
   static const Duration _cacheExpiry = Duration(minutes: 30);
   static const int _maxCacheSize = 100;
-  
+
   // Lazy loading
   final Map<String, bool> _loadingStates = {};
   final Map<String, Completer<dynamic>> _loadingCompleters = {};
@@ -53,7 +53,7 @@ class PerformanceService {
   /// Start timing an operation
   void startOperation(String operationName) {
     _operationStartTimes[operationName] = DateTime.now();
-    
+
     if (kDebugMode) {
       print('Started operation: $operationName');
     }
@@ -79,7 +79,9 @@ class PerformanceService {
     });
 
     if (kDebugMode) {
-      print('Completed operation: $operationName in ${duration.inMilliseconds}ms');
+      print(
+        'Completed operation: $operationName in ${duration.inMilliseconds}ms',
+      );
     }
 
     return duration;
@@ -169,7 +171,7 @@ class PerformanceService {
   void clearCache() {
     _cache.clear();
     _cacheTimestamps.clear();
-    
+
     if (kDebugMode) {
       print('Cache cleared');
     }
@@ -202,9 +204,9 @@ class PerformanceService {
 
     try {
       startOperation('lazy_load_$key');
-      
+
       final Future<T> loadingFuture = loader();
-      final T result = timeout != null 
+      final T result = timeout != null
           ? await loadingFuture.timeout(timeout)
           : await loadingFuture;
 
@@ -212,10 +214,9 @@ class PerformanceService {
 
       // Cache the result
       cacheData(key, result);
-      
+
       completer.complete(result);
       return result;
-
     } catch (error) {
       endOperation('lazy_load_$key');
       completer.completeError(error);
@@ -243,26 +244,32 @@ class PerformanceService {
       if (kDebugMode) {
         print('Preload failed for $key: $error');
       }
+      return loader(); // Return the result of calling loader again as fallback
     });
   }
 
   /// Optimize widget rebuilds by debouncing
   Timer? _debounceTimer;
-  void debounce(VoidCallback callback, {Duration delay = const Duration(milliseconds: 300)}) {
+  void debounce(
+    VoidCallback callback, {
+    Duration delay = const Duration(milliseconds: 300),
+  }) {
     _debounceTimer?.cancel();
     _debounceTimer = Timer(delay, callback);
   }
 
   /// Batch multiple operations to reduce overhead
-  Future<List<T>> batchOperations<T>(List<Future<T> Function()> operations) async {
+  Future<List<T>> batchOperations<T>(
+    List<Future<T> Function()> operations,
+  ) async {
     startOperation('batch_operations');
-    
+
     try {
       final results = await Future.wait(
         operations.map((op) => op()),
         eagerError: false,
       );
-      
+
       endOperation('batch_operations');
       return results;
     } catch (error) {
@@ -275,7 +282,8 @@ class PerformanceService {
   void optimizeImageLoading() {
     // Set image cache size for better memory management
     PaintingBinding.instance.imageCache.maximumSize = 100;
-    PaintingBinding.instance.imageCache.maximumSizeBytes = 50 * 1024 * 1024; // 50MB
+    PaintingBinding.instance.imageCache.maximumSizeBytes =
+        50 * 1024 * 1024; // 50MB
   }
 
   /// Reduce app startup time
@@ -290,7 +298,7 @@ class PerformanceService {
   void _performDeferredInitialization() {
     // Initialize non-critical services
     optimizeImageLoading();
-    
+
     if (kDebugMode) {
       print('Deferred initialization completed');
     }
@@ -299,9 +307,12 @@ class PerformanceService {
   /// Get performance statistics
   PerformanceStats getPerformanceStats() {
     final now = DateTime.now();
-    final recentMetrics = _metrics.where(
-      (metric) => now.difference(metric.timestamp) < const Duration(hours: 1)
-    ).toList();
+    final recentMetrics = _metrics
+        .where(
+          (metric) =>
+              now.difference(metric.timestamp) < const Duration(hours: 1),
+        )
+        .toList();
 
     final operationMetrics = recentMetrics
         .where((m) => m.name == 'operation_duration')
@@ -309,9 +320,9 @@ class PerformanceService {
 
     double avgOperationTime = 0;
     if (operationMetrics.isNotEmpty) {
-      avgOperationTime = operationMetrics
-          .map((m) => m.value)
-          .reduce((a, b) => a + b) / operationMetrics.length;
+      avgOperationTime =
+          operationMetrics.map((m) => m.value).reduce((a, b) => a + b) /
+          operationMetrics.length;
     }
 
     return PerformanceStats(
@@ -329,13 +340,13 @@ class PerformanceService {
     final cacheMetrics = _metrics
         .where((m) => m.metadata['cache_hit'] != null)
         .toList();
-    
+
     if (cacheMetrics.isEmpty) return 0.0;
-    
+
     final hits = cacheMetrics
         .where((m) => m.metadata['cache_hit'] == true)
         .length;
-    
+
     return hits / cacheMetrics.length;
   }
 
@@ -344,13 +355,13 @@ class PerformanceService {
     if (kDebugMode) {
       print('Forcing garbage collection');
     }
-    
+
     // Clear caches
     clearCache();
-    
+
     // Clear image cache
     PaintingBinding.instance.imageCache.clear();
-    
+
     // System GC hint
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
@@ -390,7 +401,7 @@ class PerformanceService {
     _operationDurations.clear();
     _loadingStates.clear();
     _loadingCompleters.clear();
-    
+
     if (kDebugMode) {
       print('Performance service disposed');
     }

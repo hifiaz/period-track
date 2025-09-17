@@ -95,20 +95,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
         );
       }
 
-      if (fertilityWindow != null) {
-        final start = fertilityWindow['start']!;
-        final end = fertilityWindow['end']!;
-        if (day.isAfter(start.subtract(const Duration(days: 1))) &&
-            day.isBefore(end.add(const Duration(days: 1)))) {
-          events.add(
-            CalendarEvent(
-              title: 'Fertility Window',
-              type: CalendarEventType.fertility,
-            ),
-          );
-        }
+      final start = fertilityWindow['start']!;
+      final end = fertilityWindow['end']!;
+      if (day.isAfter(start.subtract(const Duration(days: 1))) &&
+          day.isBefore(end.add(const Duration(days: 1)))) {
+        events.add(
+          CalendarEvent(
+            title: 'Fertility Window',
+            type: CalendarEventType.fertility,
+          ),
+        );
       }
-    }
+        }
 
     return events;
   }

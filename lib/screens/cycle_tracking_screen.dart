@@ -96,9 +96,7 @@ class _CycleTrackingScreenState extends State<CycleTrackingScreen> {
           ? PredictionService.predictNextPeriod(periods, user)
           : null;
 
-      final daysUntilNext = nextPeriod != null
-          ? nextPeriod.difference(DateTime.now()).inDays
-          : null;
+      final daysUntilNext = nextPeriod?.difference(DateTime.now()).inDays;
 
       cachedData = {'nextPeriod': nextPeriod, 'daysUntilNext': daysUntilNext};
 
@@ -106,7 +104,6 @@ class _CycleTrackingScreenState extends State<CycleTrackingScreen> {
       _performanceService.endOperation('cycle_prediction_calculation');
     }
 
-    final nextPeriod = cachedData['nextPeriod'] as DateTime?;
     final daysUntilNext = cachedData['daysUntilNext'] as int?;
 
     return Card(
@@ -393,14 +390,14 @@ class _CycleTrackingScreenState extends State<CycleTrackingScreen> {
               ),
               const SizedBox(height: 12),
             ],
-            if (fertilityWindow != null) ...[
-              _buildPredictionItem(
-                'Fertility Window',
-                '${DateFormat('MMM dd').format(fertilityWindow['start']!)} - ${DateFormat('MMM dd').format(fertilityWindow['end']!)}',
-                Icons.favorite,
-                Colors.green,
-              ),
-            ],
+            ...[
+            _buildPredictionItem(
+              'Fertility Window',
+              '${DateFormat('MMM dd').format(fertilityWindow['start']!)} - ${DateFormat('MMM dd').format(fertilityWindow['end']!)}',
+              Icons.favorite,
+              Colors.green,
+            ),
+          ],
           ],
         ),
       ),

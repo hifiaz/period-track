@@ -1,11 +1,12 @@
+import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
-import 'dart:math';
-import '../providers/app_provider.dart';
+
 import '../models/period.dart';
 import '../models/symptom.dart';
+import '../providers/app_provider.dart';
 import '../services/prediction_service.dart';
 
 class InsightsScreen extends StatefulWidget {
@@ -106,13 +107,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
 
   Widget _buildOverviewTab(AppProvider appProvider) {
     final periods = appProvider.periods;
-    final user = appProvider.user!;
     
-    final avgCycleLength = PredictionService.calculateAverageCycleLength(periods);
-    final avgPeriodLength = PredictionService.calculateAveragePeriodLength(periods);
-    final cycleVariability = _calculateCycleVariability(periods);
-    final lastPeriod = periods.isNotEmpty ? periods.first : null;
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(

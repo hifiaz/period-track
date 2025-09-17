@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
-import '../models/user.dart';
-import '../models/period.dart';
+import 'package:timezone/timezone.dart' as tz;
+
 import '../models/notification_settings.dart';
+import '../models/period.dart';
+import '../models/user.dart';
 import '../services/prediction_service.dart';
-import 'storage_service.dart';
 
 /// Enhanced notification service with real local notifications
 class NotificationService {
