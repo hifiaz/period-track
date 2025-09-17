@@ -1,0 +1,52 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="#E91E63" stroke="#C2185B" stroke-width="8"/>
+  
+  <!-- Inner Circle -->
+  <circle cx="256" cy="256" r="180" fill="#F8BBD9" opacity="0.3"/>
+  
+  <!-- Calendar Icon -->
+  <rect x="180" y="160" width="152" height="192" rx="16" fill="white" stroke="#C2185B" stroke-width="4"/>
+  
+  <!-- Calendar Header -->
+  <rect x="180" y="160" width="152" height="40" rx="16" fill="#C2185B"/>
+  
+  <!-- Calendar Rings -->
+  <circle cx="210" cy="150" r="8" fill="#C2185B"/>
+  <circle cx="256" cy="150" r="8" fill="#C2185B"/>
+  <circle cx="302" cy="150" r="8" fill="#C2185B"/>
+  
+  <!-- Calendar Grid Lines -->
+  <line x1="200" y1="220" x2="312" y2="220" stroke="#E0E0E0" stroke-width="2"/>
+  <line x1="200" y1="250" x2="312" y2="250" stroke="#E0E0E0" stroke-width="2"/>
+  <line x1="200" y1="280" x2="312" y2="280" stroke="#E0E0E0" stroke-width="2"/>
+  <line x1="200" y1="310" x2="312" y2="310" stroke="#E0E0E0" stroke-width="2"/>
+  
+  <line x1="228" y1="200" x2="228" y2="340" stroke="#E0E0E0" stroke-width="2"/>
+  <line x1="256" y1="200" x2="256" y2="340" stroke="#E0E0E0" stroke-width="2"/>
+  <line x1="284" y1="200" x2="284" y2="340" stroke="#E0E0E0" stroke-width="2"/>
+  
+  <!-- Period Days (Red Dots) -->
+  <circle cx="214" cy="235" r="6" fill="#E91E63"/>
+  <circle cx="242" cy="235" r="6" fill="#E91E63"/>
+  <circle cx="270" cy="235" r="6" fill="#E91E63"/>
+  <circle cx="298" cy="235" r="6" fill="#E91E63"/>
+  <circle cx="214" cy="265" r="6" fill="#E91E63"/>
+  
+  <!-- Predicted Days (Pink Dots) -->
+  <circle cx="242" cy="295" r="4" fill="#F48FB1" opacity="0.8"/>
+  <circle cx="270" cy="295" r="4" fill="#F48FB1" opacity="0.8"/>
+  <circle cx="298" cy="295" r="4" fill="#F48FB1" opacity="0.8"/>
+  
+  <!-- Heart Symbol -->
+  <path d="M256 380 C240 365, 220 350, 220 330 C220 315, 230 305, 245 305 C250 305, 255 307, 256 310 C257 307, 262 305, 267 305 C282 305, 292 315, 292 330 C292 350, 272 365, 256 380 Z" fill="#E91E63"/>
+  
+  <!-- Subtle Gradient Overlay -->
+  <defs>
+    <radialGradient id="shine" cx="0.3" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="256" cy="256" r="240" fill="url(#shine)"/>
+</svg>
