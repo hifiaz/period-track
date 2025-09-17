@@ -16,6 +16,10 @@ class AppProvider with ChangeNotifier {
   List<Symptom> _symptoms = [];
   bool _isLoading = false;
   String? _error;
+  
+  // Theme management
+  ThemeMode _themeMode = ThemeMode.system;
+  bool _useSystemTheme = true;
 
   // Getters
   User? get user => _user;
@@ -25,6 +29,11 @@ class AppProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   bool get isFirstTime => _user?.isFirstTime ?? true;
+  
+  // Theme getters
+  ThemeMode get themeMode => _themeMode;
+  bool get useSystemTheme => _useSystemTheme;
+  bool get isDarkMode => _themeMode == ThemeMode.dark;
 
   // Initialize app data
   Future<void> initialize() async {
@@ -37,6 +46,7 @@ class AppProvider with ChangeNotifier {
       await _loadPeriodsData();
       await _loadCyclesData();
       await _loadSymptomsData();
+      await loadThemeMode();
       
       // Schedule notifications if user exists
       if (_user != null && !_user!.isFirstTime) {
@@ -369,6 +379,41 @@ class AppProvider with ChangeNotifier {
       notifyListeners();
     } finally {
       PerformanceService().endOperation('batch_update');
+    }
+  }
+
+  // Theme management methods
+  Future<void> setThemeMode(ThemeMode mode) async {
+    _themeMode = mode;
+    _useSystemTheme = mode == ThemeMode.system;
+    
+    // Save theme preference to storage
+    await StorageService.saveThemeMode(mode);
+    notifyListeners();
+  }
+  
+  Future<void> loadThemeMode() async {
+    try {
+      final savedThemeMode = await StorageService.getThemeMode();
+      if (savedThemeMode != null) {
+        _themeMode = savedThemeMode;
+        _useSystemTheme = savedThemeMode == ThemeMode.system;
+        notifyListeners();
+      }
+    } catch (e) {
+      // If loading fails, keep default system theme
+      _themeMode = ThemeMode.system;
+      _useSystemTheme = true;
+    }
+  }
+  
+  void toggleTheme() {
+    if (_themeMode == ThemeMode.light) {
+      setThemeMode(ThemeMode.dark);
+    } else if (_themeMode == ThemeMode.dark) {
+      setThemeMode(ThemeMode.system);
+    } else {
+      setThemeMode(ThemeMode.light);
     }
   }
 

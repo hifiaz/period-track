@@ -174,7 +174,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 1.5,
+      childAspectRatio: 1.3,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
       children: [
@@ -888,9 +888,9 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                     Expanded(
                       child: Text(
                         insight,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: Colors.white,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                       ),
                     ),

@@ -37,6 +37,10 @@ dependencies:
   
   # Utils
   uuid: ^4.3.3
+  url_launcher: ^6.2.4
+  
+  # Ads
+  google_mobile_ads: ^6.0.0
   
   # Notifications
   flutter_local_notifications: ^17.0.0

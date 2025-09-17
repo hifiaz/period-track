@@ -147,12 +147,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       body: Consumer<AppProvider>(
         builder: (context, appProvider, child) {
-          return Column(
-            children: [
-              _buildLegend(),
-              Expanded(
-                flex: 3,
-                child: SingleChildScrollView(
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildLegend(),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.4,
                   child: TableCalendar<CalendarEvent>(
                     firstDay: DateTime.utc(2020, 1, 1),
                     lastDay: DateTime.utc(2030, 12, 31),
@@ -320,18 +321,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                flex: 2,
-                child: ValueListenableBuilder<List<CalendarEvent>>(
+                ValueListenableBuilder<List<CalendarEvent>>(
                   valueListenable: _selectedEvents,
                   builder: (context, value, _) {
                     return _buildEventsList(value);
                   },
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
@@ -339,47 +336,43 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildLegend() {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Legend',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 16,
+            runSpacing: 8,
             children: [
-              Text(
-                'Legend',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 16,
-                runSpacing: 8,
-                children: [
-                  _buildLegendItem('Period', Colors.pink, Icons.water_drop),
-                  _buildLegendItem('Fertility', Colors.green, Icons.favorite),
-                  _buildLegendItem('Ovulation', Colors.orange, Icons.egg),
-                  _buildLegendItem('Symptoms', Colors.purple, Icons.healing),
-                ],
-              ),
+              _buildLegendItem('Period', Colors.pink, Icons.water_drop),
+              _buildLegendItem('Fertility', Colors.green, Icons.favorite),
+              _buildLegendItem('Ovulation', Colors.orange, Icons.egg),
+              _buildLegendItem('Symptoms', Colors.purple, Icons.healing),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -407,7 +400,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.event_note, size: 48, color: Colors.grey.shade400),
+            Icon(
+              Icons.event_note,
+              size: 48,
+              color: Theme.of(context).iconTheme.color?.withOpacity(0.4),
+            ),
             const SizedBox(height: 12),
             Text(
               'No events for ${DateFormat('MMM dd, yyyy').format(_selectedDay!)}',
@@ -420,6 +417,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];

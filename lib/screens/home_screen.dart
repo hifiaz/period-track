@@ -7,6 +7,7 @@ import '../screens/cycle_tracking_screen.dart';
 import '../screens/insights_screen.dart';
 import '../services/performance_service.dart';
 import '../utils/animations.dart';
+import '../widgets/banner_ad_widget.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -78,25 +79,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppAnimations.fadeIn(
-        duration: AppAnimations.medium,
-        child: AnimatedSwitcher(
-          duration: AppAnimations.medium,
-          switchInCurve: AppAnimations.materialCurve,
-          switchOutCurve: AppAnimations.materialCurve,
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return AppAnimations.slideIn(
-              child: AppAnimations.fadeIn(
-                child: child,
-                duration: AppAnimations.medium,
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: AppAnimations.fadeIn(
               duration: AppAnimations.medium,
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            );
-          },
-          child: _loadScreen(_currentIndex),
-        ),
+              child: AnimatedSwitcher(
+                duration: AppAnimations.medium,
+                switchInCurve: AppAnimations.materialCurve,
+                switchOutCurve: AppAnimations.materialCurve,
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return AppAnimations.slideIn(
+                    child: AppAnimations.fadeIn(
+                      child: child,
+                      duration: AppAnimations.medium,
+                    ),
+                    duration: AppAnimations.medium,
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  );
+                },
+                child: _loadScreen(_currentIndex),
+              ),
+            ),
+          ),
+          const BannerAdWidget(),
+        ],
       ),
 
       bottomNavigationBar: AppAnimations.slideIn(
@@ -167,6 +175,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       _currentIndex == 0
                           ? Icons.favorite
                           : Icons.favorite_border,
+                      color: _currentIndex == 0
+                          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+                          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                     ),
                   ),
                   duration: AppAnimations.fast,
@@ -188,6 +199,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       _currentIndex == 1
                           ? Icons.calendar_today
                           : Icons.calendar_today_outlined,
+                      color: _currentIndex == 1
+                          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+                          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                     ),
                   ),
                   duration: AppAnimations.fast,
@@ -209,6 +223,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       _currentIndex == 2
                           ? Icons.insights
                           : Icons.insights_outlined,
+                      color: _currentIndex == 2
+                          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+                          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                     ),
                   ),
                   duration: AppAnimations.fast,
@@ -228,6 +245,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     child: Icon(
                       _currentIndex == 3 ? Icons.person : Icons.person_outlined,
+                      color: _currentIndex == 3
+                          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+                          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                     ),
                   ),
                   duration: AppAnimations.fast,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 import '../models/period.dart';
@@ -566,7 +567,71 @@ class StorageService {
   }
 
   // ============================================================================
-  // ANALYTICS AND INSIGHTS
+  // THEME MANAGEMENT
+  // ============================================================================
+
+  static const String _themeModeKey = 'theme_mode';
+
+  /// Save theme mode preference
+  static Future<void> saveThemeMode(ThemeMode themeMode) async {
+    await init();
+    
+    String themeModeString;
+    switch (themeMode) {
+      case ThemeMode.light:
+        themeModeString = 'light';
+        break;
+      case ThemeMode.dark:
+        themeModeString = 'dark';
+        break;
+      case ThemeMode.system:
+        themeModeString = 'system';
+        break;
+    }
+    
+    await _prefs!.setString(_themeModeKey, themeModeString);
+    _memoryCache[_themeModeKey] = themeModeString;
+    _cacheTimestamps[_themeModeKey] = DateTime.now();
+  }
+
+  /// Get saved theme mode preference
+  static Future<ThemeMode?> getThemeMode() async {
+    await init();
+    
+    // Check memory cache first
+    if (_memoryCache.containsKey(_themeModeKey) && _isCacheValid(_themeModeKey)) {
+      final cachedValue = _memoryCache[_themeModeKey] as String?;
+      if (cachedValue != null) {
+        return _parseThemeMode(cachedValue);
+      }
+    }
+    
+    // Load from persistent storage
+    final themeModeString = _prefs!.getString(_themeModeKey);
+    if (themeModeString != null) {
+      _memoryCache[_themeModeKey] = themeModeString;
+      _cacheTimestamps[_themeModeKey] = DateTime.now();
+      return _parseThemeMode(themeModeString);
+    }
+    
+    return null;
+  }
+
+  /// Parse theme mode string to ThemeMode enum
+  static ThemeMode _parseThemeMode(String themeModeString) {
+    switch (themeModeString) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+      default:
+        return ThemeMode.system;
+    }
+  }
+
+  // ============================================================================
+  // ANALYTICS AND MONITORING
   // ============================================================================
 
   static Future<Map<String, dynamic>> getDataAnalytics() async {
