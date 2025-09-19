@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -22,8 +24,27 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-8821032108500398~3876513599</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSUserNotificationAlertStyle</key>
+	<string>alert</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.periodtrack.notification-refresh</string>
+		<string>com.periodtrack.data-sync</string>
+		<string>com.periodtrack.prediction-update</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,22 +62,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>background-processing</string>
-		<string>background-fetch</string>
-	</array>
-	<key>NSUserNotificationAlertStyle</key>
-	<string>alert</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
-	<key>ITSAppUsesNonExemptEncryption</key>  
-	<false/>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-8821032108500398~3876513599</string>
 </dict>
 </plist>

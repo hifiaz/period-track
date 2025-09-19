@@ -1,15 +1,12 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AdMobService {
-  static final AdMobService _instance = AdMobService._internal();
-  factory AdMobService() => _instance;
-  AdMobService._internal();
-
   // Ad Unit IDs
-  static const String _bannerAdUnitId = 'ca-app-pub-8821032108500398/6117316517';
-  static const String _interstitialAdUnitId = 'ca-app-pub-8821032108500398/4532772107';
+  static String get _bannerAdUnitId => dotenv.env['BANNER_AD_UNIT_ID']!;
+  static String get _interstitialAdUnitId => dotenv.env['INTERSTITIAL_AD_UNIT_ID']!;
 
   // Test Ad Unit IDs for development
   static const String _testBannerAdUnitId = 'ca-app-pub-3940256099942544/2934735716';
@@ -23,13 +20,13 @@ class AdMobService {
     await MobileAds.instance.initialize();
     if (kDebugMode) {
       print('AdMob initialized in DEBUG mode - using test ad unit IDs');
-    } else {
-      print('AdMob initialized in RELEASE mode - using production ad unit IDs');
-    }
+    } // else {
+      // print('AdMob initialized in RELEASE mode - using production ad unit IDs');
+    // }
   }
 
   // Get Banner Ad Unit ID (uses test ads in debug mode)
-  String get bannerAdUnitId {
+  static String get bannerAdUnitId {
     if (kDebugMode) {
       return _testBannerAdUnitId;
     }
@@ -40,7 +37,7 @@ class AdMobService {
   }
 
   // Get Interstitial Ad Unit ID (uses test ads in debug mode)
-  String get interstitialAdUnitId {
+  static String get interstitialAdUnitId {
     if (kDebugMode) {
       return _testInterstitialAdUnitId;
     }
@@ -58,17 +55,19 @@ class AdMobService {
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          print('Banner ad loaded');
+          // print('Banner ad loaded');
         },
         onAdFailedToLoad: (ad, error) {
-          print('Banner ad failed to load: $error');
+          if (kDebugMode) {
+            print('Banner ad failed to load: $error');
+          }
           ad.dispose();
         },
         onAdOpened: (ad) {
-          print('Banner ad opened');
+          // print('Banner ad opened');
         },
         onAdClosed: (ad) {
-          print('Banner ad closed');
+          // print('Banner ad closed');
         },
       ),
     );
@@ -83,12 +82,16 @@ class AdMobService {
         onAdLoaded: (ad) {
           _interstitialAd = ad;
           _isInterstitialAdReady = true;
-          print('Interstitial ad loaded');
+          if (kDebugMode) {
+            print('Interstitial ad loaded');
+          }
 
           _interstitialAd!.setImmersiveMode(true);
         },
         onAdFailedToLoad: (error) {
-          print('Interstitial ad failed to load: $error');
+          if (kDebugMode) {
+            print('Interstitial ad failed to load: $error');
+          }
           _isInterstitialAdReady = false;
         },
       ),
@@ -100,10 +103,10 @@ class AdMobService {
     if (_isInterstitialAdReady && _interstitialAd != null) {
       _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdShowedFullScreenContent: (ad) {
-          print('Interstitial ad showed full screen content');
+          // print('Interstitial ad showed full screen content');
         },
         onAdDismissedFullScreenContent: (ad) {
-          print('Interstitial ad dismissed');
+          // print('Interstitial ad dismissed');
           ad.dispose();
           _isInterstitialAdReady = false;
           _interstitialAd = null;
@@ -115,7 +118,9 @@ class AdMobService {
           onAdClosed?.call();
         },
         onAdFailedToShowFullScreenContent: (ad, error) {
-          print('Interstitial ad failed to show: $error');
+          if (kDebugMode) {
+            print('Interstitial ad failed to show: $error');
+          }
           ad.dispose();
           _isInterstitialAdReady = false;
           _interstitialAd = null;
@@ -127,7 +132,9 @@ class AdMobService {
 
       _interstitialAd!.show();
     } else {
-      print('Interstitial ad not ready');
+      if (kDebugMode) {
+        print('Interstitial ad not ready');
+      }
       // Load ad for next time
       loadInterstitialAd();
     }
