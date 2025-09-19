@@ -1,6 +1,6 @@
 # Period Track
 
-![App Icon](assets/icon/icon.png)
+![App Icon](assets/icon/icon.png =100x)
 
 A Flutter-based mobile application for tracking menstrual cycles and women's health. This app provides a smooth, native-feeling experience with optimized performance for iOS and Android devices.
 
